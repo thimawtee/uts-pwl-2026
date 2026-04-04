@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma/client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Mahasiswa {
+  id       Int    @id @default(autoincrement())
+  nama     String
+  nim      String @unique
+  jurusan  String
+  angkatan Int
+}

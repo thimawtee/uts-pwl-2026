@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-gray-100">
+  <div class="flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR -->
+    <aside id="sidebar"
+      class="bg-blue-700 text-white w-64 flex flex-col absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out z-10">
+      
+      <!-- LOGO -->
+      <div class="px-6 py-6 border-b border-blue-600">
+        <h2 class="text-2xl font-bold text-center tracking-wide">My App</h2>
+        <p class="text-blue-300 text-xs text-center mt-1">Bun MVC + Prisma</p>
+      </div>
+
+      <!-- CURRENT PATH BADGE -->
+      <div class="px-4 py-3 border-b border-blue-600">
+        <p class="text-xs text-blue-300 uppercase font-semibold mb-1">Lokasi Sekarang</p>
+        <div class="flex items-center gap-2 bg-blue-800 rounded-lg px-3 py-2">
+          <span class="text-blue-300 text-xs">📍</span>
+          <span class="text-white text-xs font-mono truncate"><%= currentPath === '/' ? '/dashboard' : currentPath %></span>
+        </div>
+      </div>
+
+      <!-- NAV -->
+      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <a href="/" class="flex items-center gap-3 py-2 px-4 rounded-xl transition
+          <%= currentPath === '/' ? 'bg-white text-blue-700 font-semibold shadow' : 'text-white hover:bg-blue-600' %>">
+          🏠 <span>Dashboard</span>
+        </a>
+
+        <!-- DROPDOWN MASTER -->
+        <div>
+          <button onclick="toggleMenu()"
+            class="w-full flex items-center justify-between py-2 px-4 rounded-xl hover:bg-blue-600 transition text-white">
+            <span class="flex items-center gap-3">📁 <span>Master</span></span>
+            <span id="arrow" class="text-xs transition-transform <%= currentPath.includes('/mahasiswa') ? 'rotate-90' : '' %>">▶</span>
+          </button>
+          <div id="submenu" class="<%= currentPath.includes('/mahasiswa') ? '' : 'hidden' %> ml-4 mt-1 space-y-1">
+            <a href="/mahasiswa"
+              class="flex items-center gap-3 py-2 px-4 rounded-xl transition
+              <%= currentPath.includes('/mahasiswa') ? 'bg-white text-blue-700 font-semibold shadow' : 'text-blue-200 hover:bg-blue-600 hover:text-white' %>">
+              👨‍🎓 <span>Mahasiswa</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- FOOTER SIDEBAR -->
+      <div class="px-4 py-4 border-t border-blue-600">
+        <p class="text-blue-300 text-xs text-center">© 2026 Bun MVC App</p>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+      <!-- NAVBAR -->
+      <header class="bg-white shadow px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <button class="md:hidden text-gray-700 text-xl" onclick="toggleSidebar()">☰</button>
+          <!-- BREADCRUMB -->
+          <nav class="hidden md:flex items-center gap-2 text-sm text-gray-500">
+            <a href="/" class="hover:text-blue-600">Home</a>
+            <% if (currentPath !== '/') { %>
+              <span>›</span>
+              <% currentPath.split('/').filter(p => p).forEach((segment, i, arr) => { %>
+                <% if (i === arr.length - 1) { %>
+                  <span class="text-gray-700 font-semibold capitalize"><%= segment %></span>
+                <% } else { %>
+                  <a href="/<%= segment %>" class="hover:text-blue-600 capitalize"><%= segment %></a>
+                  <span>›</span>
+                <% } %>
+              <% }) %>
+            <% } else { %>
+              <span>›</span>
+              <span class="text-gray-700 font-semibold">Dashboard</span>
+            <% } %>
+          </nav>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="relative">
+          <button onclick="toggleProfile()"
+            class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-xl transition">
+            <span class="text-lg">👤</span>
+            <span class="text-sm font-medium text-gray-700">Profil</span>
+            <span class="text-xs text-gray-400">▼</span>
+          </button>
+          <div id="profileMenu" class="hidden absolute right-0 mt-2 bg-white shadow-lg rounded-xl w-44 z-20 overflow-hidden">
+            <a href="#" class="block px-4 py-3 text-sm hover:bg-gray-50 transition">👤 Profile</a>
+            <hr>
+            <a href="#" class="block px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition">🚪 Logout</a>
+          </div>
+        </div>
+      </header>
+
+      <!-- CONTENT -->
+      <main class="p-6 flex-1 overflow-y-auto">
+        <%- body %>
+      </main>
+
+      <!-- FOOTER -->
+      <footer class="bg-white text-center px-6 py-3 shadow text-sm text-gray-400 border-t">
+        © 2026 - Bun MVC App &nbsp;|&nbsp; Powered by Bun.js + Prisma + Tailwind
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('-translate-x-full');
+    }
+    function toggleMenu() {
+      document.getElementById('submenu').classList.toggle('hidden');
+      document.getElementById('arrow').classList.toggle('rotate-90');
+    }
+    function toggleProfile() {
+      document.getElementById('profileMenu').classList.toggle('hidden');
+    }
+    // Tutup profile menu kalau klik di luar
+    document.addEventListener('click', function(e) {
+      const menu = document.getElementById('profileMenu');
+      const btn = e.target.closest('button');
+      if (!btn && !menu.classList.contains('hidden')) {
+        menu.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

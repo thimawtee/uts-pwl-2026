@@ -1,0 +1,81 @@
+<!-- NOTIFIKASI SUCCESS / ERROR -->
+<% if (typeof success !== 'undefined' && success) { %>
+  <div id="alert-success" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl mb-4 flex justify-between items-center">
+    <span>✅ <%= success %></span>
+    <button onclick="document.getElementById('alert-success').remove()" class="text-green-700 font-bold">✕</button>
+  </div>
+<% } %>
+
+<% if (typeof error !== 'undefined' && error) { %>
+  <div id="alert-error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl mb-4 flex justify-between items-center">
+    <span>❌ <%= error %></span>
+    <button onclick="document.getElementById('alert-error').remove()" class="text-red-700 font-bold">✕</button>
+  </div>
+<% } %>
+
+<!-- HEADER + TOMBOL TAMBAH -->
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-xl font-bold text-gray-700">Data Mahasiswa</h2>
+  <a href="/mahasiswa/create"
+    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition">
+    + Tambah
+  </a>
+</div>
+
+<!-- TABEL -->
+<div class="bg-white rounded-2xl shadow overflow-x-auto">
+  <table class="w-full text-sm text-left">
+    <thead class="bg-blue-600 text-white">
+      <tr>
+        <th class="px-6 py-3 rounded-tl-2xl">No</th>
+        <th class="px-6 py-3">Nama</th>
+        <th class="px-6 py-3">NIM</th>
+        <th class="px-6 py-3 rounded-tr-2xl text-center">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (mahasiswa.length === 0) { %>
+        <tr>
+          <td colspan="4" class="text-center py-8 text-gray-400">Belum ada data mahasiswa.</td>
+        </tr>
+      <% } %>
+      <% mahasiswa.forEach((mhs, index) => { %>
+        <tr class="border-b hover:bg-gray-50 transition">
+          <td class="px-6 py-3"><%= index + 1 %></td>
+          <td class="px-6 py-3 font-medium text-gray-700"><%= mhs.nama %></td>
+          <td class="px-6 py-3 text-gray-500"><%= mhs.nim %></td>
+          <td class="px-6 py-3 text-center space-x-2">
+            <a href="/mahasiswa/edit/<%= mhs.id %>"
+              class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded-lg text-xs font-semibold transition">
+              ✏️ Edit
+            </a>
+            <button onclick="confirmDelete('<%= mhs.id %>', '<%= mhs.nama %>')"
+              class="inline-block bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs font-semibold transition">
+              🗑️ Hapus
+            </button>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<!-- SCRIPT HAPUS DENGAN KONFIRMASI -->
+<script>
+  function confirmDelete(id, nama) {
+    Swal.fire({
+      title: 'Yakin?',
+      text: `Data "${nama}" akan dihapus permanen!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
+      confirmButtonText: 'Ya, hapus!',
+      cancelButtonText: 'Batal'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = `/mahasiswa/delete/${id}`;
+      }
+    });
+  }
+</script>

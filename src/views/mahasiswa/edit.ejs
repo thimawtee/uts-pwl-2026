@@ -1,0 +1,84 @@
+<div class="bg-white p-6 rounded-2xl shadow max-w-lg mx-auto mt-10">
+  <h2 class="text-xl font-bold mb-6 text-gray-700 flex items-center gap-2">
+    <span>📝</span> Edit Data Mahasiswa
+  </h2>
+
+  <form onsubmit="return validateForm()" action="/mahasiswa/update/<%= mhs.id %>" method="POST" class="space-y-4">
+    
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">Nama</label>
+      <input
+        name="nama"
+        type="text"
+        value="<%= mhs.nama %>"
+        placeholder="Masukkan nama lengkap"
+        class="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+      />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">NIM</label>
+      <input
+        name="nim"
+        type="text"
+        value="<%= mhs.nim %>"
+        placeholder="Masukkan NIM"
+        class="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+      />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">Jurusan</label>
+      <input
+        name="jurusan"
+        type="text"
+        value="<%= mhs.jurusan %>"
+        placeholder="Contoh: Sistem Informasi"
+        class="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+      />
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-600 mb-1">Angkatan</label>
+      <input
+        name="angkatan"
+        type="number"
+        value="<%= mhs.angkatan %>"
+        placeholder="Contoh: 2024"
+        class="w-full p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+      />
+    </div>
+
+    <div class="flex gap-3 pt-4">
+      <button type="submit"
+        class="flex-1 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-orange-200 transition active:scale-95">
+        💾 Simpan Perubahan
+      </button>
+      <a href="/mahasiswa"
+        class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-6 py-3 rounded-xl font-semibold transition text-center">
+        Batal
+      </a>
+    </div>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function validateForm() {
+    const nama = document.querySelector('input[name="nama"]').value.trim();
+    const nim = document.querySelector('input[name="nim"]').value.trim();
+    const jurusan = document.querySelector('input[name="jurusan"]').value.trim();
+    const angkatan = document.querySelector('input[name="angkatan"]').value.trim();
+
+    if (!nama || !nim || !jurusan || !angkatan) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Data Tidak Boleh Kosong',
+        text: 'Harap lengkapi semua data sebelum menyimpan!',
+        confirmButtonColor: '#f97316' // Warna orange sesuai tombol simpan
+      });
+      return false;
+    }
+    return true;
+  }
+</script>

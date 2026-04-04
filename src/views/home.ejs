@@ -1,0 +1,82 @@
+<!-- STATS CARDS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+  
+  <!-- Card Total Mahasiswa -->
+  <div class="group bg-white p-8 rounded-3xl border border-blue-100 shadow-sm
+              hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-200
+              transition-all duration-300 flex items-center gap-5 cursor-default">
+    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-2xl
+                border border-blue-100 shadow-sm
+                group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+      👨‍🎓
+    </div>
+    <div>
+      <p class="text-sm text-gray-400 font-semibold uppercase tracking-wide">Total Mahasiswa</p>
+      <p class="text-4xl font-extrabold text-blue-600 mt-1"><%= totalMahasiswa %></p>
+    </div>
+  </div>
+
+  <!-- Card Total Dosen -->
+  <div class="group bg-white p-8 rounded-3xl border border-green-100 shadow-sm
+              hover:-translate-y-2 hover:shadow-xl hover:shadow-green-200
+              transition-all duration-300 flex items-center gap-5 cursor-default">
+    <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center text-2xl
+                border border-green-100 shadow-sm
+                group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+      👨‍🏫
+    </div>
+    <div>
+      <p class="text-sm text-gray-400 font-semibold uppercase tracking-wide">Total Dosen</p>
+      <p class="text-4xl font-extrabold text-green-600 mt-1">35</p>
+    </div>
+  </div>
+
+  <!-- Card Total Matkul -->
+  <div class="group bg-white p-8 rounded-3xl border border-yellow-100 shadow-sm
+              hover:-translate-y-2 hover:shadow-xl hover:shadow-yellow-200
+              transition-all duration-300 flex items-center gap-5 cursor-default">
+    <div class="w-14 h-14 bg-yellow-50 rounded-2xl flex items-center justify-center text-2xl
+                border border-yellow-100 shadow-sm
+                group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+      📚
+    </div>
+    <div>
+      <p class="text-sm text-gray-400 font-semibold uppercase tracking-wide">Total Matkul</p>
+      <p class="text-4xl font-extrabold text-yellow-500 mt-1">50</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- TABEL DATA MAHASISWA -->
+<div class="bg-white rounded-2xl shadow">
+  <div class="flex justify-between items-center px-6 py-4 border-b">
+    <h2 class="text-lg font-bold text-gray-700">📋 Data Mahasiswa Terbaru</h2>
+    <a href="/mahasiswa" class="text-sm text-blue-600 hover:underline">Lihat semua →</a>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm text-left">
+      <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+        <tr>
+          <th class="px-6 py-3">No</th>
+          <th class="px-6 py-3">Nama</th>
+          <th class="px-6 py-3">NIM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (mahasiswa.length === 0) { %>
+          <tr>
+            <td colspan="3" class="text-center py-8 text-gray-400">Belum ada data mahasiswa.</td>
+          </tr>
+        <% } %>
+        <% mahasiswa.forEach((mhs, index) => { %>
+          <tr class="border-b hover:bg-gray-50 transition">
+            <td class="px-6 py-3 text-gray-500"><%= index + 1 %></td>
+            <td class="px-6 py-3 font-medium text-gray-700"><%= mhs.nama %></td>
+            <td class="px-6 py-3 text-gray-500"><%= mhs.nim %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
